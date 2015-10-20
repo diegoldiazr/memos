@@ -9,8 +9,9 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import main.dao.model.Libreta;
@@ -32,20 +33,19 @@ public class LibretaController {
 	private Logger log = Logger.getLogger(LibretaController.class);
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	@RequestMapping(value = "/libreta", produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(method = RequestMethod.GET, value = "/libretas/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public Return getLibretaById(
-			@RequestParam(value="id", required = false, defaultValue = "0") Integer id){
+			@PathVariable("id") Integer id){
 		Return result = new Return();
 		try{
 			Libreta l = libretaService.getLibretaById(id);			
-			if (l!=null){
-				result.setCode(StandardResponse.OK);
-				result.setNumResult(1);				
+			if (l!=null){											
 				List lista = new ArrayList<>();
 				lista.add(l);
 				result.setData(lista);
 			}else{
 				result.setCode(StandardResponse.SIN_CONTENIDO);
+				result.setMessage(StandardResponse.MESSAGE_SIN_CONTENIDO);
 				result.setNumResult(0);
 			}
 		}catch(Exception e){
@@ -55,17 +55,17 @@ public class LibretaController {
 	}
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	@RequestMapping(value = "/libretas", produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(method = RequestMethod.GET, value = "/libretas", produces = MediaType.APPLICATION_JSON_VALUE)
 	public Return getLibretas(){
 		Return result = new Return();
 		try{
 			List l = libretaService.getLibretas();
-			if (l!=null){
-				result.setCode(StandardResponse.OK);
+			if (l!=null){				
 				result.setNumResult(l.size());				
 				result.setData(l);
 			}else{
 				result.setCode(StandardResponse.SIN_CONTENIDO);
+				result.setMessage(StandardResponse.MESSAGE_SIN_CONTENIDO);
 				result.setNumResult(0);
 			}
 		}catch(Exception e){
