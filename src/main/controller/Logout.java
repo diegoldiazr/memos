@@ -24,6 +24,6 @@ public class Logout {
 	    if (auth != null){    
 	        new SecurityContextLogoutHandler().logout(request, response, auth);
 	    }
-	    return "<a href='http://localhost:8080/memosDDR/data/libretas'>Volver</a>";//You can redirect wherever you want, but generally it's a good practice to show login screen again.
+	    return "<a href='http://localhost:8080/memos/data/libretas'>Volver</a>";//You can redirect wherever you want, but generally it's a good practice to show login screen again.
 	}
 }
